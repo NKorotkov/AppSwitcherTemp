@@ -12,6 +12,13 @@
 
 @interface NKAppBlurManager : NSObject
 
+/*!
+ @brief Switches auto blurring on and off.
+ @param enabled When <i>enabled</i> is set to YES NKAppBlurManager automatically blurs your app's window when app goes to inactive state and restores initial state when app becomes active. Set <i>enabled</i> to NO to stop auto blurring.
+ */
+
+@property (nonatomic, assign) BOOL autoBlurEnabled;
+
 /*! @brief Use this property to control the blur radius applied to your app's window when app goes to inactive state. Usually you'll want values somewhere between 5 and 50. If not set, default value of 15 will be used. */
 
 @property (nonatomic, assign) CGFloat blurRadius;
@@ -34,11 +41,5 @@
 
 + (void)setAppActive:(BOOL)active;
 
-/*!
- @brief Switches auto blurring on and off.
- @param enabled When <i>enabled</i> is set to YES NKAppBlurManager automatically blurs your app's window when app goes to inactive state and restores initial state when app becomes active. Set <i>enabled</i> to NO to stop auto blurring.
- */
-
-- (void)setAutoBlurEnabled:(BOOL)enabled;
 
 @end

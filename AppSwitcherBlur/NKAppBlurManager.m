@@ -11,16 +11,14 @@
 #import <objc/runtime.h>
 
 // Private category to add a blur view property to a window
-@interface UIWindow (BlurPrivate)
+@interface UIWindow (BlurViewPrivate)
 @property UIView *nkBlurView;
 @end
 
-@implementation UIWindow (BlurPrivate)
+@implementation UIWindow (BlurViewPrivate)
 - (void)setNkBlurView:(UIView *)nkBlurView { objc_setAssociatedObject(self, @selector(nkBlurView), nkBlurView, OBJC_ASSOCIATION_RETAIN); }
 - (UIView *)nkBlurView { return objc_getAssociatedObject(self, @selector(nkBlurView)); }
 @end
-
-
 
 
 
@@ -30,7 +28,7 @@ static CGFloat const BLUR_RADIUS = 15;
 
 
 @interface NKAppBlurManager ()
-@property (nonatomic, assign) BOOL autoBlur;
+//@property (nonatomic, assign, readwrite) BOOL autoBlurEnabled;
 @end
 
 @implementation NKAppBlurManager
@@ -42,7 +40,6 @@ static CGFloat const BLUR_RADIUS = 15;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         _manager = [NKAppBlurManager new];
-        
     });
     
     return _manager;
@@ -50,18 +47,19 @@ static CGFloat const BLUR_RADIUS = 15;
 
 - (void)setAutoBlurEnabled:(BOOL)enabled {
     
-    if (enabled && !self.autoBlur) {
+    if (enabled && !_autoBlurEnabled) {
         
-        self.autoBlur = YES;
+        _autoBlurEnabled = enabled;
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(_handleApplicationDidBecomeActive) name:UIApplicationDidBecomeActiveNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(_handleWillResignActive) name:UIApplicationWillResignActiveNotification object:nil];
         
-    } else if (!enabled && self.autoBlur) {
+    } else if (!enabled && _autoBlurEnabled) {
         
-        self.autoBlur = NO;
         [[NSNotificationCenter defaultCenter] removeObserver:self];
         
     }
+    
+    _autoBlurEnabled = enabled;
     
 }
 

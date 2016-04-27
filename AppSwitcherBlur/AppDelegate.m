@@ -7,7 +7,6 @@
 //
 
 #import "AppDelegate.h"
-#import "NKAppBlurManager.h"
 
 @interface AppDelegate ()
 
@@ -18,12 +17,7 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
-    
-    [[NKAppBlurManager sharedManager] setAutoBlurEnabled:YES];
-    [[NKAppBlurManager sharedManager] setBlurRadius:5];
-    [[NKAppBlurManager sharedManager] setTintColor:[[UIColor blueColor] colorWithAlphaComponent:0.2]];
-    
-    
+
     return YES;
 }
 
